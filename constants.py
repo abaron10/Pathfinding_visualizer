@@ -9,5 +9,5 @@ class Colors(Enum):
     BLACK = (0, 0, 0)
     RED = (255, 0, 0)
     ORANGE = (255, 165 ,0)
-    GREY = (128, 128, 128)
+    GREY = (175, 216, 248,255)
     FUCSIA = (255, 0, 255)
