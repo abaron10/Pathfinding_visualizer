@@ -1,7 +1,7 @@
 
 import pygame
-from constants import Colors
-
+from ui_complements.Constants import Colors
+pygame.font.init()
 class Node:
 	def __init__(self, row, col, width, total_rows):
 		self.row = row
@@ -49,7 +49,7 @@ class Node:
 	def make_end(self):
 		self.color = Colors.FUCSIA.value
 
-	def make_path(self):
+	def make_patheight(self):
 		self.color = Colors.RED.value
 
 	def draw(self, win):
@@ -104,6 +104,7 @@ class Node:
 		self.color = Colors.WHITE.value
 
 	def make_start(self):
+
 		self.color = Colors.ORANGE.value
 
 	def make_closed(self):
@@ -118,7 +119,9 @@ class Node:
 	def make_end(self):
 		self.color = Colors.FUCSIA.value
 
-	def make_path(self):
+	def make_patheight(self,win):
+		
+		
 		self.color = Colors.RED.value
 
 	def draw(self, win):

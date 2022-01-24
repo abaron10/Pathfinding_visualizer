@@ -1,76 +1,37 @@
 import pygame
 import math
 from queue import PriorityQueue
-from constants import Colors
-from Node import Node
-from Grid import Grid
-from Astar import  Astar
+from ui_complements.Constants import Colors
+from algorithm.Node import Node
+from ui_complements.Grid import Grid
+from algorithm.Astar import  Astar
 
-
-WIDTH = 1000
-WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("A* Path Finding Algorithm")
-
-def make_grid(rows, width):
-	grid = []
-	gap = width // rows
-	for i in range(rows):
-		grid.append([])
-		for j in range(rows):
-			node = Node(i, j, gap, rows)
-			grid[i].append(node)
-
-	return grid
-
-
-def draw_grid(win, rows, width):
-	gap = width // rows
-	for i in range(rows):
-		pygame.draw.line(win, Colors.GREY.value, (0, i * gap), (width, i * gap))
-		for j in range(rows):
-			pygame.draw.line(win, Colors.GREY.value, (j * gap, 0), (j * gap, width))
-
-
-def draw(win, grid, rows, width):
-	win.fill(Colors.WHITE.value)
-
-	for row in grid:
-		for node in row:
-			node.draw(win)
-
-	draw_grid(win, rows, width)
-	pygame.display.update()
-
-
-def get_clicked_pos(pos, rows, width):
-	gap = width // rows
-	y, x = pos
-
-	row = y // gap
-	col = x // gap
-
-	return row, col
-
+pygame.font.init()
+WIDTH = 700
+WIN = pygame.display.set_mode((1200, WIDTH))
+pygame.display.set_caption("A star Path Finding Algorithm")
 
 def main(win, width):
 	ROWS = 50
-	# grid = Grid()
+	gridObject = Grid()	
 	astar = Astar()
-	grid = make_grid(ROWS, width)
+	grid = gridObject.make_grid(ROWS, width)
+	start,end,run = None,None,True
+	def current_click(pos, rows, width):
+		gap = width // rows
+		return pos[0] // gap, pos[1] // gap
 
-	start = None
-	end = None
-
-	run = True
 	while run:
-		draw(win, grid, ROWS, width)
+		
+		gridObject.draw(win, grid, ROWS, width)
 		for event in pygame.event.get():
+			
 			if event.type == pygame.QUIT:
 				run = False
 
-			if pygame.mouse.get_pressed()[0]: # LEFT
+			if pygame.mouse.get_pressed()[0]:
 				pos = pygame.mouse.get_pos()
-				row, col = get_clicked_pos(pos, ROWS, width)
+				row, col = current_click(pos, ROWS, width)
 				node = grid[row][col]
 				if not start and node != end:
 					start = node
@@ -82,10 +43,16 @@ def main(win, width):
 
 				elif node != end and node != start:
 					node.make_barrier()
+			elif pygame.mouse.get_pressed()[1]:
+				for row in grid:
+					for node in row:
+						x,y = node.get_pos()
+						grid[x][y].reset()
+				start, end = None , None
 
 			elif pygame.mouse.get_pressed()[2]: # RIGHT
 				pos = pygame.mouse.get_pos()
-				row, col = get_clicked_pos(pos, ROWS, width)
+				row, col = current_click(pos, ROWS, width)
 				node = grid[row][col]
 				node.reset()
 				if Node == start:
@@ -99,13 +66,14 @@ def main(win, width):
 						for node in row:
 							node.update_neighbors(grid)
 
-					astar.algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end)
+					astar.implementation(lambda: gridObject.draw(win, grid, ROWS, width), grid, start, end,win)
 
 				if event.key == pygame.K_c:
 					start = None
 					end = None
-					grid = make_grid(ROWS, width)
-
+					grid = gridObject.make_grid(ROWS, width)
+		
+	
 	pygame.quit()
 
-main(WIN, WIDTH)
+main(WIN, 1200)

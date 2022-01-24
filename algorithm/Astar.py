@@ -2,17 +2,12 @@ from queue import PriorityQueue
 import pygame
 
 class Astar():
-    def algorithm(self,draw, grid, start, end):
-        count = 0
+    def implementation(self,draw, grid, start, end,win):
+        count,origin,open_set_hash = 0 ,{}, {start}
         open_set = PriorityQueue()
         open_set.put((0, count, start))
-        came_from = {}
-        g_score = {node: float("inf") for row in grid for node in row}
-        g_score[start] = 0
-        f_score = {node: float("inf") for row in grid for node in row}
-        f_score[start] = self.h(start.get_pos(), end.get_pos())
-
-        open_set_hash = {start}
+        g_score , f_score = {node: float("inf") for row in grid for node in row},{node: float("inf") for row in grid for node in row}
+        g_score[start],f_score[start] = 0, self.height(start.get_pos(), end.get_pos())
 
         while not open_set.empty():
             for event in pygame.event.get():
@@ -23,7 +18,7 @@ class Astar():
             open_set_hash.remove(current)
 
             if current == end:
-                self.reconstruct_path(came_from, end, draw)
+                self.reversePath(origin,start, end, draw,win)
                 end.make_end()
                 return True
 
@@ -31,9 +26,7 @@ class Astar():
                 temp_g_score = g_score[current] + 1
 
                 if temp_g_score < g_score[neighbor]:
-                    came_from[neighbor] = current
-                    g_score[neighbor] = temp_g_score
-                    f_score[neighbor] = temp_g_score + self.h(neighbor.get_pos(), end.get_pos())
+                    origin[neighbor],g_score[neighbor],f_score[neighbor] = current,temp_g_score,temp_g_score + self.height(neighbor.get_pos(), end.get_pos())
                     if neighbor not in open_set_hash:
                         count += 1
                         open_set.put((f_score[neighbor], count, neighbor))
@@ -46,14 +39,25 @@ class Astar():
                 current.make_closed()
 
         return False
-    def h(self,p1, p2):
+    def height(self,p1, p2):
         x1, y1 = p1
         x2, y2 = p2
         return abs(x1 - x2) + abs(y1 - y2)
 
 
-    def reconstruct_path(self,came_from, current, draw):
-        while current in came_from:
-            current = came_from[current]
-            current.make_path()
+    def reversePath(self,origin,start, current, draw,win):
+        counter = 0
+        
+        while current in origin:
+            current = origin[current]
+            if current != start:
+                current.make_patheight(win)
+                
+            else:
+                current.make_start()
+            counter += 1
+            
             draw()
+        
+            
+        

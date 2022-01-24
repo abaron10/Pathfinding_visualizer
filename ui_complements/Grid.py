@@ -1,7 +1,8 @@
 
-from constants import Colors
-from Node import Node
+from ui_complements.Constants import Colors
+from algorithm.Node import Node
 import pygame
+pygame.font.init()
 class Grid():
     
     def make_grid(self,rows, width):
@@ -22,6 +23,7 @@ class Grid():
             pygame.draw.line(win, Colors.GREY.value, (0, i * gap), (width, i * gap))
             for j in range(rows):
                 pygame.draw.line(win, Colors.GREY.value, (j * gap, 0), (j * gap, width))
+                
 
 
     def draw(self,win, grid, rows, width):
@@ -30,6 +32,8 @@ class Grid():
         for row in grid:
             for node in row:
                 node.draw(win)
+               
 
         self.draw_grid(win, rows, width)
+        
         pygame.display.update()
