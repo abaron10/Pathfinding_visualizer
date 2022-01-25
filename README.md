@@ -41,6 +41,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
  This project focuses on the use of search algorithms (A*) applied to heuristic and informed graphs. The goal of this is to find the shortest path between two points, where the start marker is orange and the end marker is purple.
+ <p align="center">
+    <img src="https://user-images.githubusercontent.com/64280930/150982811-b3ca139c-e6d4-4128-93b3-74f1844711a5.png"  width="700">
+  </a>
+</p>
+
+
 ### A* Algorithm
 A* (pronounced "A-star") is a graph traversal and path search algorithm, which is often used in many fields 
 of computer science due to its completeness, optimality, and optimal efficiency.One major practical drawback is its O(b^d) space complexity,
