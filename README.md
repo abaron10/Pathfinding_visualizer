@@ -56,7 +56,7 @@ it is generally outperformed by algorithms which can pre-process the graph to at
 ### Time Complexity
 The time complexity of A* depends on the heuristic. In the worst case of an unbounded search space,
 the number of nodes expanded is exponential in the depth of the solution (the shortest path) d: O(bd), 
-where b is the branching factor (the average number of successors per state).[22] This assumes that a goal state exists at all, 
+where b is the branching factor (the average number of successors per state).This assumes that a goal state exists at all, 
 and is reachable from the start state; if it is not, and the state space is infinite, the algorithm will not terminate.
 
 The heuristic function has a major effect on the practical performance of A* search, since a good heuristic allows A* to prune away many 
